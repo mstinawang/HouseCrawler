@@ -1,0 +1,55 @@
+package connection;
+
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLConnection;
+import java.util.Properties;
+import java.util.Scanner;
+
+import javax.xml.parsers.ParserConfigurationException;
+
+import org.xml.sax.SAXException;
+
+/**
+ * 类说明：<br/>
+ * 文件名称：WebSubmit.java<br/>
+ * 包路径：connection<br/>
+ * 项目名称：青海交通统计<br/>
+ * 版权信息：长城计算机软件与系统有限公司 (c) 2010-2015<br/>
+ * 
+ * @Author tiantian
+ * @Version 1.0.0
+ * @Date 2016-7-3-下午10:18:52
+ * @Note Commit Info：<br/>
+ *       $Id$<br/>
+ *       $Revision$<br/>
+ *       $Date$<br/>
+ *       $Author$<br/>
+ */
+public class WebSubmit {
+
+	public void doPost() throws IOException{
+		URL url=new URL("http://www.bjguahao.gov.cn/quicklogin.htm");
+		URLConnection connection=url.openConnection();
+		connection.setDoOutput(true);
+		try(PrintWriter out=new PrintWriter(connection.getOutputStream())){
+			out.print("mobileNo=13581813542&password=wtt_yygh88&yzm=&isAjax=true");
+	        out.close();
+		}
+		Scanner in=new Scanner(connection.getInputStream());
+		while(in.hasNextLine()){
+			System.out.println(in.nextLine());
+		}
+		
+	}
+	
+	
+	public static void main(String [] args) throws ParserConfigurationException, SAXException, IOException {
+		//Properties
+		
+		WebSubmit c=new WebSubmit();
+	    c.doPost();
+	}
+}
