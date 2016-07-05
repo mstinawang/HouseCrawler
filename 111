@@ -15,9 +15,6 @@ import org.xml.sax.SAXException;
 /**
  * 类说明：<br/>
  * 文件名称：WebSubmit.java<br/>
- * 包路径：connection<br/>
- * 项目名称：青海交通统计<br/>
- * 版权信息：长城计算机软件与系统有限公司 (c) 2010-2015<br/>
  * 
  * @Author tiantian
  * @Version 1.0.0
