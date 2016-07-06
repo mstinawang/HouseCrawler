@@ -1,5 +1,5 @@
 
-
+package connection;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -23,6 +23,8 @@ import org.apache.http.cookie.Cookie;
 import org.apache.http.impl.client.BasicCookieStore;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.impl.cookie.BasicClientCookie;
+import org.apache.http.params.HttpConnectionParams;
+import org.apache.http.params.HttpParams;
 import org.xml.sax.SAXException;
 
 /**
@@ -45,8 +47,9 @@ public class WebSubmit {
 		URL url=new URL("http://www.bjguahao.gov.cn/quicklogin.htm");
 		URLConnection connection=url.openConnection();
 		connection.setDoOutput(true);
+		//connection.
 		try(PrintWriter out=new PrintWriter(connection.getOutputStream())){
-			out.print("mobileNo=13581813542&password=wtt_yygh88&yzm=&isAjax=true");
+			out.print("mobileNo=13581912451&password=zhang_0820&yzm=&isAjax=true");
 	        out.close();
 		}
 		
@@ -67,24 +70,6 @@ public class WebSubmit {
 	            
 	            
 	       }
-		 
-		 
-//		 for (Header h : headers) {
-//	            String name = h.getName();
-//	            String value = h.getValue();
-//	            System.out.println("header : " + h.getName() + ":" + h.getValue());
-//
-//	            if ("Set-Cookie".equalsIgnoreCase(name)) {
-//	                String[] strs = value.split(";");
-//	                for (String str : strs) {
-//	                    String[] cookies = str.split("=");
-//	                    System.out.println("=============== : " + cookies[0] + ":"
-//	                            + cookies[1]);
-//	                    cs.addCookie(new BasicClientCookie(cookies[0], cookies[1]));
-//	                }
-//	            }
-//
-//	        }
 		
 		
 		Scanner in=new Scanner(connection.getInputStream());
@@ -97,23 +82,57 @@ public class WebSubmit {
 	
 	
 	public void doPost1() throws IOException{
-//		URL url=new URL("http://www.bjguahao.gov.cn/v/sendorder.htm");
-//		URLConnection connection=url.openConnection();
-//		connection.setDoOutput(true);
-//		try(PrintWriter out=new PrintWriter(connection.getOutputStream())){
-//			out.print("");
-//	        out.close();
-//		}
-//		Scanner in=new Scanner(connection.getInputStream(),"UTF-8");
-//		while(in.hasNextLine()){
-//			System.out.println(in.nextLine());
-//		}
-		
 		
 		System.out.println("----------------------------------------");
         System.out.println("----------------------------------------");
 
         String url = "http://www.bjguahao.gov.cn/v/sendorder.htm";
+
+        DefaultHttpClient httpclient = new DefaultHttpClient();
+
+        String cookieStr = "";
+        List<Cookie> list = cs.getCookies();
+        for (Cookie cookie : list) {
+            cookieStr += cookie.getName() + "=" + cookie.getValue() + ";";
+        }
+
+        // 目标地址
+        HttpPost httppost = new HttpPost(url);
+        httppost.setHeader("Cookie", cookieStr);
+//        departmentId	
+//        200039608
+//        dutyCode	
+//        1
+//        dutyDate	
+//        2016-07-13
+//        hospitalId	
+//        142
+//        isAjax	
+//        true
+        HttpConnectionParams p=new HttpConnectionParams();
+        httppost.setParams("departmentId","200039608");
+        httppost.setParams(params);
+        System.out.println("请求: " + httppost.getRequestLine());
+        // 设置类型
+        // 执行
+        HttpResponse response = httpclient.execute(httppost);
+        HttpEntity entity = response.getEntity();
+
+        BufferedReader reader = new BufferedReader(new InputStreamReader(
+                entity.getContent(), "UTF-8"));
+        String line = null;
+        while ((line = reader.readLine()) != null) {
+            System.out.println(line);
+        }
+	}
+	
+	
+	public void doPartduty() throws IOException{
+		
+		System.out.println("----------------------------------------");
+        System.out.println("----------------------------------------");
+
+        String url = "http://www.bjguahao.gov.cn/dpt/partduty.htm";
 
         DefaultHttpClient httpclient = new DefaultHttpClient();
 
